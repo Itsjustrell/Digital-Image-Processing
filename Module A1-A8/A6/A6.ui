@@ -6,15 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1181</width>
-    <height>921</height>
+    <width>791</width>
+    <height>510</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="imglabel">
+   <widget class="QLabel" name="inputwindow">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -56,7 +56,7 @@
      <string>Save Image</string>
     </property>
    </widget>
-   <widget class="QLabel" name="imglabel_2">
+   <widget class="QLabel" name="outputwindow">
     <property name="geometry">
      <rect>
       <x>400</x>
@@ -70,19 +70,6 @@
     </property>
     <property name="text">
      <string/>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="GrayScaleButton">
-    <property name="geometry">
-     <rect>
-      <x>210</x>
-      <y>20</y>
-      <width>121</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Grayscale Image</string>
     </property>
    </widget>
    <widget class="QLabel" name="label">
@@ -95,23 +82,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Default Image</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="imglabel_3">
-    <property name="geometry">
-     <rect>
-      <x>790</x>
-      <y>100</y>
-      <width>381</width>
-      <height>361</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::Box</enum>
-    </property>
-    <property name="text">
-     <string/>
+     <string>INPUT IMAGE</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
@@ -124,78 +95,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Grayscale Image</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>790</x>
-      <y>70</y>
-      <width>131</width>
-      <height>19</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Brightness Image</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="imglabel_4">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>510</y>
-      <width>381</width>
-      <height>361</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::Box</enum>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_4">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>480</y>
-      <width>131</width>
-      <height>19</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Contrast Image</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="imglabel_5">
-    <property name="geometry">
-     <rect>
-      <x>400</x>
-      <y>510</y>
-      <width>381</width>
-      <height>361</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::Box</enum>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_5">
-    <property name="geometry">
-     <rect>
-      <x>400</x>
-      <y>480</y>
-      <width>131</width>
-      <height>19</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Contrast Stretching</string>
+     <string>OUTPUT IMAGE</string>
     </property>
    </widget>
   </widget>
@@ -204,46 +104,67 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1181</width>
+     <width>791</width>
      <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuBrightness">
     <property name="title">
-     <string>Brightness</string>
-    </property>
-    <addaction name="actionBrightness"/>
-   </widget>
-   <widget class="QMenu" name="menuSimple_Contrast">
-    <property name="title">
-     <string>Simple Contrast</string>
-    </property>
-    <addaction name="actionSimpleContrast"/>
-   </widget>
-   <widget class="QMenu" name="menuContrast_Stretching">
-    <property name="title">
-     <string>Contrast Stretching</string>
+     <string>Operasi Titik</string>
     </property>
     <addaction name="actionContrastStretching"/>
    </widget>
    <addaction name="menuBrightness"/>
-   <addaction name="menuSimple_Contrast"/>
-   <addaction name="menuContrast_Stretching"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionBrightness">
+  <action name="GrayScaleButton">
    <property name="text">
-    <string>actionBrightness</string>
+    <string>Grayscale</string>
    </property>
   </action>
-  <action name="actionSimpleContrast">
+  <action name="h">
    <property name="text">
     <string>actionSimpleContrast</string>
    </property>
   </action>
-  <action name="actionContrastStretching">
+  <action name="action">
    <property name="text">
     <string>actionContrastStretching</string>
+   </property>
+  </action>
+  <action name="action_2">
+   <property name="text">
+    <string>actionNegative</string>
+   </property>
+  </action>
+  <action name="action_3">
+   <property name="text">
+    <string>actionBinerImage</string>
+   </property>
+  </action>
+  <action name="actionBrightness_2">
+   <property name="text">
+    <string>Brightness</string>
+   </property>
+  </action>
+  <action name="actionSimpleContrast">
+   <property name="text">
+    <string>Simple Contrast</string>
+   </property>
+  </action>
+  <action name="actionContrastStretching">
+   <property name="text">
+    <string>Contrast Stretching</string>
+   </property>
+  </action>
+  <action name="actionNegative">
+   <property name="text">
+    <string>Negative</string>
+   </property>
+  </action>
+  <action name="actionBinerImage">
+   <property name="text">
+    <string>Biner</string>
    </property>
   </action>
  </widget>

@@ -16,7 +16,7 @@ class ShowImage(QMainWindow):
         self.gray_image = None
 
         self.loadbutton.clicked.connect(self.loadClicked)
-        self.GrayScaleButton.clicked.connect(self.grayClicked)
+        self.GrayScaleButton.triggered.connect(self.grayClicked)
         self.saveButton.clicked.connect(self.saveClicked)
 
     @pyqtSlot()
@@ -31,12 +31,13 @@ class ShowImage(QMainWindow):
             return
         self.loadImage(filename)
 
-    def loadImage(self, filename):
-        self.image = cv2.imread(filename)
+    def loadImage(self, flname):
+        self.image = cv2.imread(flname)
         if self.image is None:
-            QtWidgets.QMessageBox.warning(self, "Load Image", f"Gagal membuka: {filename}")
+            QtWidgets.QMessageBox.warning(self, "Load Image", f"Gagal membuka: {flname}")
             return
-        self.displayImage(self.image, window=1)
+        self.gray_image = None
+        self.displayImage(1)
 
     @pyqtSlot()
     def grayClicked(self):
@@ -44,19 +45,20 @@ class ShowImage(QMainWindow):
             QtWidgets.QMessageBox.information(self, "Info", "Load image terlebih dahulu.")
             return
 
-        # Command Soal 1: Konversi RGB/BGR ke grayscale manual (Persamaan 2).
-        # BGR -> Grayscale dengan formula luminance manual.
-        blue = self.image[:, :, 0]
-        green = self.image[:, :, 1]
-        red = self.image[:, :, 2]
-        gray = np.clip(0.114 * blue + 0.587 * green + 0.299 * red, 0, 255).astype(np.uint8)
-
+        H, W = self.image.shape[:2]
+        gray = np.zeros((H, W), np.uint8)
+        for i in range(H):
+            for j in range(W):
+                gray[i, j] = np.clip(
+                    0.299 * self.image[i, j, 0]
+                    + 0.587 * self.image[i, j, 1]
+                    + 0.114 * self.image[i, j, 2],
+                    0,
+                    255,
+                )
         self.gray_image = gray
-        # Command Soal 2: Tampilkan matriks piksel citra keabuan.
-        print("\n=== MATRIX PIXEL GRAYSCALE (A3) ===")
-        print(self.gray_image)
-        # Command Soal 3: Display hasil grayscale pada label hasil.
-        self.displayImage(self.gray_image, window=2)
+        self.image = gray
+        self.displayImage(2)
 
     @pyqtSlot()
     def saveClicked(self):
@@ -79,37 +81,44 @@ class ShowImage(QMainWindow):
         else:
             QtWidgets.QMessageBox.warning(self, "Save Image", f"Gagal simpan: {filename}")
 
-    def displayImage(self, image, window=1):
-        if image is None:
+    def displayImage(self, windows=1):
+        if self.image is None:
             return
 
-        if len(image.shape) == 2:
-            qformat = QImage.Format_Grayscale8
-        elif image.shape[2] == 4:
-            qformat = QImage.Format_RGBA8888
-        else:
-            qformat = QImage.Format_RGB888
+        qformat = QImage.Format_Indexed8
+        if len(self.image.shape) == 3:
+            if self.image.shape[2] == 4:
+                qformat = QImage.Format_RGBA8888
+            else:
+                qformat = QImage.Format_RGB888
 
-        qimg = QImage(
-            image.data,
-            image.shape[1],
-            image.shape[0],
-            image.strides[0],
+        img = QImage(
+            self.image.data,
+            self.image.shape[1],
+            self.image.shape[0],
+            self.image.strides[0],
             qformat,
         )
-
         if qformat in (QImage.Format_RGB888, QImage.Format_RGBA8888):
-            qimg = qimg.rgbSwapped()
+            img = img.rgbSwapped()
 
-        target_label = self.imglabel if window == 1 else self.imglabel_2
-        target_label.setPixmap(QPixmap.fromImage(qimg))
-        target_label.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
-        target_label.setScaledContents(True)
+        if windows == 1:
+            label = getattr(self, "imgLabel", None) or getattr(self, "inputwindow", None)
+            if label is not None:
+                label.setPixmap(QPixmap.fromImage(img))
+                label.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
+                label.setScaledContents(True)
+
+        if windows == 2:
+            label = getattr(self, "hasilLabel", None) or getattr(self, "outputwindow", None)
+            if label is not None:
+                label.setPixmap(QPixmap.fromImage(img))
+                label.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
+                label.setScaledContents(True)
 
 
-if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    window = ShowImage()
-    window.setWindowTitle("Show Image GUI")
-    window.show()
-    sys.exit(app.exec_())
+app = QtWidgets.QApplication(sys.argv)
+window = ShowImage()
+window.setWindowTitle("Show Image GUI")
+window.show()
+sys.exit(app.exec_())

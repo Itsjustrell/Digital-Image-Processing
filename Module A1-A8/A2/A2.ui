@@ -6,35 +6,35 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>669</width>
-    <height>598</height>
+    <width>399</width>
+    <height>473</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="imglabel">
+   <widget class="QLabel" name="inputwindow">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>30</y>
-      <width>591</width>
-      <height>441</height>
+      <x>10</x>
+      <y>60</y>
+      <width>381</width>
+      <height>361</height>
      </rect>
     </property>
     <property name="frameShape">
      <enum>QFrame::Box</enum>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
    </widget>
    <widget class="QPushButton" name="loadbutton">
     <property name="geometry">
      <rect>
-      <x>290</x>
-      <y>500</y>
+      <x>10</x>
+      <y>10</y>
       <width>88</width>
       <height>27</height>
      </rect>
@@ -49,12 +49,62 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>669</width>
+     <width>399</width>
      <height>24</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="GrayScaleButton">
+   <property name="text">
+    <string>Grayscale</string>
+   </property>
+  </action>
+  <action name="h">
+   <property name="text">
+    <string>actionSimpleContrast</string>
+   </property>
+  </action>
+  <action name="action">
+   <property name="text">
+    <string>actionContrastStretching</string>
+   </property>
+  </action>
+  <action name="action_2">
+   <property name="text">
+    <string>actionNegative</string>
+   </property>
+  </action>
+  <action name="action_3">
+   <property name="text">
+    <string>actionBinerImage</string>
+   </property>
+  </action>
+  <action name="actionBrightness_2">
+   <property name="text">
+    <string>Brightness</string>
+   </property>
+  </action>
+  <action name="actionSimpleContrast">
+   <property name="text">
+    <string>Simple Contrast</string>
+   </property>
+  </action>
+  <action name="actionContrastStretching">
+   <property name="text">
+    <string>Contrast Stretching</string>
+   </property>
+  </action>
+  <action name="actionNegative">
+   <property name="text">
+    <string>Negative</string>
+   </property>
+  </action>
+  <action name="actionBinerImage">
+   <property name="text">
+    <string>Biner</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

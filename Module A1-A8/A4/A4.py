@@ -7,19 +7,18 @@ from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.uic import loadUi
 
-
 class ShowImage(QMainWindow):
     def __init__(self):
         super(ShowImage, self).__init__()
         loadUi("A4.ui", self)
         self.image = None
+        self.rgb_image = None
         self.gray_image = None
         self.brightness_image = None
 
         self.loadbutton.clicked.connect(self.loadClicked)
-        self.GrayScaleButton.clicked.connect(self.grayClicked)
-        self.saveButton.clicked.connect(self.saveClicked)
         self.actionBrightness.triggered.connect(self.brightnessClicked)
+        self.saveButton.clicked.connect(self.saveClicked)
 
     @pyqtSlot()
     def loadClicked(self):
@@ -33,57 +32,69 @@ class ShowImage(QMainWindow):
             return
         self.loadImage(filename)
 
-    def loadImage(self, filename):
-        self.image = cv2.imread(filename)
+    def loadImage(self, flname):
+        self.image = cv2.imread(flname)
         if self.image is None:
-            QtWidgets.QMessageBox.warning(self, "Load Image", f"Gagal membuka: {filename}")
+            QtWidgets.QMessageBox.warning(self, "Load Image", f"Gagal membuka: {flname}")
             return
+        self.rgb_image = self.image.copy()
         self.gray_image = None
         self.brightness_image = None
-        self.displayImage(self.image, window=1)
+        self.displayImage(1)
 
     @pyqtSlot()
     def grayClicked(self):
-        if self.image is None:
+        if self.rgb_image is None:
             QtWidgets.QMessageBox.information(self, "Info", "Load image terlebih dahulu.")
             return
 
-        gray = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
+        H, W = self.rgb_image.shape[:2]
+        gray = np.zeros((H, W), np.uint8)
+        for i in range(H):
+            for j in range(W):
+                gray[i, j] = np.clip(
+                    0.299 * self.rgb_image[i, j, 0]
+                    + 0.587 * self.rgb_image[i, j, 1]
+                    + 0.114 * self.rgb_image[i, j, 2],
+                    0,
+                    255,
+                )
         self.gray_image = gray
-        self.displayImage(self.gray_image, window=2)
+        self.image = gray
+        self.displayImage(2)
 
     @pyqtSlot()
     def brightnessClicked(self):
-        if self.gray_image is None:
-            QtWidgets.QMessageBox.information(
-                self,
-                "Info",
-                "Klik Grayscale dulu untuk menghasilkan image grayscale.",
-            )
+        if self.rgb_image is None:
+            QtWidgets.QMessageBox.information(self, "Info", "Load image terlebih dahulu.")
             return
 
-        # Command Soal 1: Terapkan Persamaan (3), f'(x,y)=f(x,y)+b.
+        # 1-2. Load image RGB lalu konversi ke grayscale pakai def grayClicked
+        self.grayClicked()
+        gray = self.gray_image.copy()
+
+        # 3. Baca array nilai piksel setiap baris dan kolom
         brightness = 50
-        bright = np.clip(self.gray_image.astype(np.int16) + brightness, 0, 255).astype(np.uint8)
-        # Command Soal 2: Lakukan clipping ke rentang 0..255.
-        # (Clipping sudah dilakukan oleh np.clip di atas.)
+        h, w = gray.shape[:2]
+        img = gray.copy()
 
-        # Command Soal 3: Analisis sebelum/sesudah brightness.
-        print("\n=== ANALISIS BRIGHTNESS (A4) ===")
-        print(
-            f"Sebelum -> min:{int(np.min(self.gray_image))}, "
-            f"max:{int(np.max(self.gray_image))}, "
-            f"mean:{float(np.mean(self.gray_image)):.2f}"
-        )
-        print(
-            f"Sesudah  -> min:{int(np.min(bright))}, "
-            f"max:{int(np.max(bright))}, "
-            f"mean:{float(np.mean(bright)):.2f}"
-        )
+        # 4-5. Terapkan persamaan brightness dan clipping
+        for i in range(h):
+            for j in range(w):
+                a = int(gray[i, j])
+                b = a + brightness
+                if b > 255:
+                    b = 255
+                elif b < 0:
+                    b = 0
+                img[i, j] = b
 
-        # Command Soal 4: Display image brightness.
-        self.brightness_image = bright
-        self.displayImage(self.brightness_image, window=3)
+        self.gray_image = gray
+        self.brightness_image = img
+        self.image = img
+
+        # 6. Display citra
+        self.displayImage(2)
 
     @pyqtSlot()
     def saveClicked(self):
@@ -112,49 +123,44 @@ class ShowImage(QMainWindow):
         else:
             QtWidgets.QMessageBox.warning(self, "Save Image", f"Gagal simpan: {filename}")
 
-    def displayImage(self, image, window=1):
-        if image is None:
+    def displayImage(self, windows=1):
+        if self.image is None:
             return
 
-        if len(image.shape) == 2:
-            qformat = QImage.Format_Grayscale8
-        elif image.shape[2] == 4:
-            qformat = QImage.Format_RGBA8888
-        else:
-            qformat = QImage.Format_RGB888
+        qformat = QImage.Format_Indexed8
+        if len(self.image.shape) == 3:
+            if self.image.shape[2] == 4:
+                qformat = QImage.Format_RGBA8888
+            else:
+                qformat = QImage.Format_RGB888
 
-        qimg = QImage(
-            image.data,
-            image.shape[1],
-            image.shape[0],
-            image.strides[0],
+        img = QImage(
+            self.image.data,
+            self.image.shape[1],
+            self.image.shape[0],
+            self.image.strides[0],
             qformat,
         )
-
         if qformat in (QImage.Format_RGB888, QImage.Format_RGBA8888):
-            qimg = qimg.rgbSwapped()
+            img = img.rgbSwapped()
 
-        if window == 1:
-            target_label = self.imglabel
-        elif window == 2:
-            target_label = self.imglabel_2
-        else:
-            target_label = getattr(self, "imglabel3", None) or getattr(self, "imglabel_3", None)
-            if target_label is None:
-                QtWidgets.QMessageBox.warning(
-                    self,
-                    "UI Error",
-                    "Label brightness (imglabel3/imglabel_3) tidak ditemukan di A4.ui.",
-                )
-                return
+        if windows == 1:
+            label = getattr(self, "inputwindow", None)
+            if label is not None:
+                label.setPixmap(QPixmap.fromImage(img))
+                label.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
+                label.setScaledContents(True)
 
-        target_label.setPixmap(QPixmap.fromImage(qimg))
-        target_label.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
-        target_label.setScaledContents(True)
+        if windows == 2:
+            label = getattr(self, "outputwindow", None)
+            if label is not None:
+                label.setPixmap(QPixmap.fromImage(img))
+                label.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
+                label.setScaledContents(True)
 
-if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    window = ShowImage()
-    window.setWindowTitle("Show Image GUI")
-    window.show()
-    sys.exit(app.exec_())
+
+app = QtWidgets.QApplication(sys.argv)
+window = ShowImage()
+window.setWindowTitle("Show Image GUI")
+window.show()
+sys.exit(app.exec_())

@@ -10,9 +10,8 @@ from PyQt5.uic import loadUi
 class ShowImage(QMainWindow):
     def __init__(self):
         super(ShowImage, self).__init__()
-        loadUi("A2.ui", self)
+        loadUi('A2.ui', self)
         self.image = None
-        self.gray_image = None
         self.loadbutton.clicked.connect(self.loadClicked)
 
     @pyqtSlot()
@@ -27,44 +26,39 @@ class ShowImage(QMainWindow):
             return
         self.loadImage(filename)
 
-    # Prosedur load image
     def loadImage(self, flname):
         self.image = cv2.imread(flname)
         if self.image is None:
             QtWidgets.QMessageBox.warning(self, "Load Image", f"Gagal membuka: {flname}")
             return
-        # Command Soal 2: Modifikasi agar citra yang ditampilkan adalah grayscale.
-        self.gray_image = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
-        self.displayImage(self.gray_image)
+        self.displayImage()
 
-    # Prosedur display image
-    def displayImage(self, image):
+    def displayImage(self):
         qformat = QImage.Format_Indexed8
-        if len(image.shape) == 3:
-            if image.shape[2] == 4:
+        if len(self.image.shape) == 3:
+            if self.image.shape[2] == 4:
                 qformat = QImage.Format_RGBA8888
             else:
                 qformat = QImage.Format_RGB888
 
         img = QImage(
-            image.data,
-            image.shape[1],
-            image.shape[0],
-            image.strides[0],
+            self.image,
+            self.image.shape[1],
+            self.image.shape[0],
+            self.image.strides[0],
             qformat,
         )
-        if qformat in (QImage.Format_RGB888, QImage.Format_RGBA8888):
-            img = img.rgbSwapped()
 
-        self.imglabel.setPixmap(QPixmap.fromImage(img))
-        self.imglabel.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
-        # Command Soal 3: Stretch tampilan sesuai ukuran image label.
-        self.imglabel.setScaledContents(True)
+        img = img.rgbSwapped()
+        target_label = getattr(self, "imgLabel", None) or getattr(self, "inputwindow", None)
+        if target_label is None:
+            return
+        target_label.setPixmap(QPixmap.fromImage(img))
+        target_label.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
 
 
-if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    window = ShowImage()
-    window.setWindowTitle("Show Image GUI")
-    window.show()
-    sys.exit(app.exec_())
+app = QtWidgets.QApplication(sys.argv)
+window = ShowImage()
+window.setWindowTitle('Show Image GUI')
+window.show()
+sys.exit(app.exec_())
