@@ -35,25 +35,25 @@
      <rect>
       <x>10</x>
       <y>20</y>
-      <width>88</width>
+      <width>151</width>
       <height>27</height>
      </rect>
     </property>
     <property name="text">
-     <string>Load Image</string>
+     <string>Load img1 &amp; img2</string>
     </property>
    </widget>
    <widget class="QPushButton" name="saveButton">
     <property name="geometry">
      <rect>
-      <x>110</x>
+      <x>170</x>
       <y>20</y>
-      <width>88</width>
+      <width>121</width>
       <height>27</height>
      </rect>
     </property>
     <property name="text">
-     <string>Save Image</string>
+     <string>Save Result</string>
     </property>
    </widget>
    <widget class="QLabel" name="imglabel_2">
@@ -77,12 +77,12 @@
      <rect>
       <x>400</x>
       <y>70</y>
-      <width>111</width>
+      <width>141</width>
       <height>19</height>
      </rect>
     </property>
     <property name="text">
-     <string>OUTPUT IMAGE</string>
+     <string>HASIL ARITMATIKA</string>
     </property>
    </widget>
    <widget class="QLabel" name="label">
@@ -90,12 +90,12 @@
      <rect>
       <x>10</x>
       <y>70</y>
-      <width>101</width>
+      <width>171</width>
       <height>19</height>
      </rect>
     </property>
     <property name="text">
-     <string>INPUT  IMAGE</string>
+     <string>INPUT IMAGE (img1.jpg)</string>
     </property>
    </widget>
   </widget>
@@ -108,18 +108,36 @@
      <height>24</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuHistogram_Grayscale">
+   <widget class="QMenu" name="menuOperasiAritmatika">
     <property name="title">
-     <string>Histogram</string>
+     <string>Operasi Aritmatika</string>
     </property>
-    <addaction name="actionGrayHistogram"/>
+    <addaction name="actionPenjumlahan"/>
+    <addaction name="actionPengurangan"/>
+    <addaction name="actionPerkalian"/>
+    <addaction name="actionPembagian"/>
    </widget>
-   <addaction name="menuHistogram_Grayscale"/>
+   <addaction name="menuOperasiAritmatika"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionGrayHistogram">
+  <action name="actionPenjumlahan">
    <property name="text">
-    <string>GrayHistogram</string>
+    <string>Penjumlahan</string>
+   </property>
+  </action>
+  <action name="actionPengurangan">
+   <property name="text">
+    <string>Pengurangan</string>
+   </property>
+  </action>
+  <action name="actionPerkalian">
+   <property name="text">
+    <string>Perkalian</string>
+   </property>
+  </action>
+  <action name="actionPembagian">
+   <property name="text">
+    <string>Pembagian</string>
    </property>
   </action>
  </widget>

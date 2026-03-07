@@ -108,18 +108,72 @@
      <height>24</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuHistogram_Grayscale">
+   <widget class="QMenu" name="menuOperasiGeometri">
     <property name="title">
-     <string>Histogram</string>
+     <string>Operasi Geometri</string>
     </property>
-    <addaction name="actionGrayHistogram"/>
+    <widget class="QMenu" name="menuResize">
+     <property name="title">
+      <string>Resize</string>
+     </property>
+     <widget class="QMenu" name="menuZoomIn">
+      <property name="title">
+       <string>Zoom In</string>
+      </property>
+      <addaction name="actionZoomIn2x"/>
+      <addaction name="actionZoomIn3x"/>
+      <addaction name="actionZoomIn4x"/>
+     </widget>
+     <widget class="QMenu" name="menuZoomOut">
+      <property name="title">
+       <string>Zoom Out</string>
+      </property>
+      <addaction name="actionZoomOutHalf"/>
+      <addaction name="actionZoomOutQuarter"/>
+      <addaction name="actionZoomOutThreeQuarter"/>
+     </widget>
+     <addaction name="menuZoomIn"/>
+     <addaction name="menuZoomOut"/>
+     <addaction name="actionSkewedImage"/>
+    </widget>
+    <addaction name="menuResize"/>
    </widget>
-   <addaction name="menuHistogram_Grayscale"/>
+   <addaction name="menuOperasiGeometri"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionGrayHistogram">
+  <action name="actionZoomIn2x">
    <property name="text">
-    <string>GrayHistogram</string>
+    <string>2x</string>
+   </property>
+  </action>
+  <action name="actionZoomIn3x">
+   <property name="text">
+    <string>3x</string>
+   </property>
+  </action>
+  <action name="actionZoomIn4x">
+   <property name="text">
+    <string>4x</string>
+   </property>
+  </action>
+  <action name="actionZoomOutHalf">
+   <property name="text">
+    <string>1/2</string>
+   </property>
+  </action>
+  <action name="actionZoomOutQuarter">
+   <property name="text">
+    <string>1/4</string>
+   </property>
+  </action>
+  <action name="actionZoomOutThreeQuarter">
+   <property name="text">
+    <string>3/4</string>
+   </property>
+  </action>
+  <action name="actionSkewedImage">
+   <property name="text">
+    <string>Skewed Image</string>
    </property>
   </action>
  </widget>

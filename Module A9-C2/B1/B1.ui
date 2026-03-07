@@ -110,17 +110,17 @@
    </property>
    <widget class="QMenu" name="menuHistogram_Grayscale">
     <property name="title">
-     <string>Histogram Eq</string>
+     <string>Operasi Geometri</string>
     </property>
     <addaction name="separator"/>
-    <addaction name="actionRGBHistogram"/>
+    <addaction name="actionTranslasi"/>
    </widget>
    <addaction name="menuHistogram_Grayscale"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionRGBHistogram">
+  <action name="actionTranslasi">
    <property name="text">
-    <string>Histogram Eq</string>
+    <string>Translasi</string>
    </property>
   </action>
  </widget>

@@ -108,18 +108,18 @@
      <height>24</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuHistogram_Grayscale">
+   <widget class="QMenu" name="menuOperasiGeometri">
     <property name="title">
-     <string>Histogram</string>
+     <string>Operasi Geometri</string>
     </property>
-    <addaction name="actionGrayHistogram"/>
+    <addaction name="actionCrop"/>
    </widget>
-   <addaction name="menuHistogram_Grayscale"/>
+   <addaction name="menuOperasiGeometri"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionGrayHistogram">
+  <action name="actionCrop">
    <property name="text">
-    <string>GrayHistogram</string>
+    <string>Crop</string>
    </property>
   </action>
  </widget>
